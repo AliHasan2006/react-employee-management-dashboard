@@ -124,20 +124,29 @@
 
 
   const admin = [{
+    firstName: 'admin mai',
     "id": 101,
     "email": "admin@example.com",
     "password": "123"
   },
 ]
 
+export const setLocalStorage = () => {
+  // Only set if NOT already present
+  if (!localStorage.getItem("employees")) {
+    localStorage.setItem("employees", JSON.stringify(employees));
+  }
 
-export const setLocalStorage = ()=>{
-localStorage.setItem('employees', JSON.stringify(employees));
-localStorage.setItem('admin',JSON.stringify(admin))
-}
-export const getLocalStorage = ()=>{
-const employeesData = JSON.parse(localStorage.getItem('employees'));
-const adminData = JSON.parse(localStorage.getItem('admin'));
-// console.log(employeesData);
-return {employeesData,adminData};
-}
+  if (!localStorage.getItem("admin")) {
+    localStorage.setItem("admin", JSON.stringify(admin));
+  }
+
+  // NEVER touch loggedInUserData here
+};
+
+export const getLocalStorage = () => {
+  return {
+    employeesData: JSON.parse(localStorage.getItem("employees")) || [],
+    adminData: JSON.parse(localStorage.getItem("admin")) || [],
+  };
+};
