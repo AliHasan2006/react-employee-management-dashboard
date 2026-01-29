@@ -6,11 +6,17 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [authUserData, setAuthUserData] = useState({});
 
-  useEffect(() => {
-    setLocalStorage(); // ✅ now safe
-    const { employeesData, adminData } = getLocalStorage();
-    setAuthUserData({ employeesData, adminData });
-  }, []);
+useEffect(() => {
+  if (
+    !localStorage.getItem("employees") ||
+    !localStorage.getItem("admin")
+  ) {
+    setLocalStorage(); 
+  }
+
+  const { employeesData, adminData } = getLocalStorage();
+  setAuthUserData({ employeesData, adminData });
+}, []);
 
   return (
     <AuthContext.Provider value={authUserData}>
