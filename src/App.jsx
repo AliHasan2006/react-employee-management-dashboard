@@ -8,9 +8,10 @@ function App() {
   const [user, setUser] = useState(null);
   const [loggedInUserData, setLoggedInUserData] = useState(null);
   const authData = useContext(AuthContext);
-
+// localStorage.clear();
   // This effect runs immediately on load
   useEffect(() => {
+    
     const loggedInUser = localStorage.getItem("loggedInUser");
     if (loggedInUser) {
       const userData = JSON.parse(loggedInUser);
@@ -24,7 +25,7 @@ function App() {
       setUser("admin");
       localStorage.setItem("loggedInUser", JSON.stringify({ role: "admin" }));
     } else if (authData) {
-      const employee = authData.employees.find((e) => email === e.email && e.password === password);
+      const employee = authData.employees.find((e) => email === e.email && password === e.password);
       if (employee) {
         setUser("employee");
         setLoggedInUserData(employee);
@@ -41,7 +42,6 @@ function App() {
     <>
       {/* If user is null, it means we are still checking LocalStorage or no one is logged in */}
       {!user ? <Login handleLogin={handleLogin} /> : ""}
-      
       {user === 'admin' ? <AdminDashboard /> : (user === 'employee' ? <EmployeeDashboard data={loggedInUserData} /> : null)}
     </>
   );
